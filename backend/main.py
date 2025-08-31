@@ -159,6 +159,10 @@ SALARY_DATA_DIR = BASE_DIR / "salary-gh-pages" / "data" / "csv"
 POPULATION_DATA_DIR = BASE_DIR / "taiwan_population_data"
 CLINIC_DATA_PATH = BASE_DIR / "taiwan_clinic_site" / "TAIWAN CLINIC SITE_FINAL_20231231.csv"
 
+print(f"Running in environment: {'production' if os.getenv('RAILWAY_ENVIRONMENT') else 'development'}")
+print(f"BASE_DIR: {BASE_DIR}")
+print(f"Files in BASE_DIR: {list(BASE_DIR.glob('*'))}")
+
 print(f"BASE_DIR: {BASE_DIR}")
 print(f"COUNTY_GEOJSON_PATH: {COUNTY_GEOJSON_PATH}")
 print(f"VILLAGE_GEOJSON_PATH: {VILLAGE_GEOJSON_PATH}")
