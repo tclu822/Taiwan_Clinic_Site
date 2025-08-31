@@ -1,0 +1,828 @@
+/* 全域樣式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 主容器 */
+.container {
+    display: flex;
+    height: 100vh;
+    position: relative;
+}
+
+/* 地圖樣式 */
+#map {
+    flex: 1;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+/* 載入指示器 */
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.loading .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 控制面板 */
+.controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+
+/* 資料面板 */
+.data-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 33.33vw;
+    height: 100vh;
+    background: #fff;
+    border-left: 1px solid #ddd;
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.data-panel.show {
+    display: flex;
+    transform: translateX(0);
+}
+
+.data-panel-header {
+    background: #007bff;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.data-panel-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.data-panel-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.data-item {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.data-item h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.data-item p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.data-item .highlight {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* 薪資表格樣式 */
+.salary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.salary-table th,
+.salary-table td {
+    padding: 12px 8px;
+    text-align: center;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 13px;
+}
+
+.salary-table th {
+    background: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+}
+
+.salary-table tr:hover {
+    background: #f8f9fa;
+}
+
+.salary-table td:first-child {
+    font-weight: normal; /* 取消粗體 */
+    color: #000000;
+}
+
+/* 圖表容器 */
+.chart-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    height: 350px; /* 設定固定高度 */
+}
+
+.chart-container h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    text-align: center;
+}
+
+#salary-chart, 
+#combined-chart {
+    max-width: 100%;
+    height: 320px !important; /* 增加圖表畫布高度 */
+}
+
+/* 標籤樣式 */
+.county-label, .village-label {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8), -1px -1px 2px rgba(255, 255, 255, 0.8), 1px -1px 2px rgba(255, 255, 255, 0.8), -1px 1px 2px rgba(255, 255, 255, 0.8);
+    padding: 2px 6px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform-origin: center center;
+}
+
+.village-label {
+    font-size: 10px;
+    color: #000000;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .data-panel {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+    
+    .tables-container {
+        flex-direction: column;
+    }
+    
+    .table-column {
+        min-width: 100%;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .bivariate-legend {
+        bottom: 10px;
+        left: 10px;
+        width: 180px; /* 響應式設計中也保持固定寬度 */
+        max-width: 180px;
+    }
+    
+    .county-label, .village-label {
+        font-size: 10px;
+        padding: 1px 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .county-label, .village-label {
+        font-size: 8px;
+        padding: 1px 2px;
+    }
+    
+    .bivariate-legend {
+        font-size: 12px;
+    }
+    
+    .control-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* 隱藏樣式 */
+.hidden {
+    display: none !important;
+}
+
+/* 控制面板 */
+.control-panel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+/* 返回按鈕 */
+.control-button {
+    margin-bottom: 10px;
+    display: none;
+}
+
+.control-button button {
+    background: #007cba;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.control-button button:hover {
+    background: #005a8a;
+}
+
+/* 雙變數控制滑桿 */
+.bivariate-controls {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    max-width: 280px;
+}
+
+.bivariate-controls h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.slider-container {
+    margin-bottom: 15px;
+}
+
+.slider-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.weight-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #ddd;
+    outline: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.weight-slider:hover {
+    opacity: 1;
+}
+
+.weight-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007cba;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.weight-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007cba;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.slider-info {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.slider-info small {
+    color: #666;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+/* 雙變數矩陣圖例 */
+.bivariate-legend {
+    position: absolute;
+    bottom: 30px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    width: 200px;
+    max-width: 200px;
+    display: none; /* 預設隱藏，只在村里模式顯示 */
+}
+
+.bivariate-legend h4 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+.bivariate-legend.show {
+    display: block;
+}
+
+.bivariate-matrix {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1px;
+    width: 160px; /* 縮小矩陣大小 */
+    height: 160px; /* 縮小矩陣大小 */
+    margin: 8px 0;
+}
+
+.bivariate-matrix .matrix-cell {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.bivariate-axes {
+    position: relative;
+    margin-top: 5px;
+}
+
+.axis-label {
+    font-size: 10px;
+    color: #666;
+    font-weight: bold;
+}
+
+.axis-label.x-axis {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.axis-label.y-axis {
+    position: absolute;
+    left: -25px;
+    top: -90px;
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+/* 資料區段樣式 */
+.data-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.data-section.compact {
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.data-section h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 2px solid #007cba;
+    padding-bottom: 8px;
+}
+
+.data-section h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #007cba;
+    padding-bottom: 5px;
+}
+
+/* 圖表區段 */
+.chart-section {
+    margin-bottom: 20px;
+    min-height: 400px; /* 增加圖表高度 */
+}
+
+/* 表格容器 */
+.tables-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.table-column {
+    flex: 1;
+    min-width: 0; /* 允許彈性縮放 */
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+
+.data-table.compact {
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.data-table.compact th,
+.data-table.compact td {
+    padding: 5px;
+    font-size: 10px;
+}
+
+.data-table th {
+    background: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
+.data-table tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.data-table tr:hover {
+    background: rgba(0, 123, 186, 0.1);
+}
+
+.salary-table th {
+    background: rgba(220, 53, 69, 0.1);
+    border-bottom: 2px solid #dc3545;
+}
+
+.population-table th {
+    background: rgba(0, 123, 255, 0.1);
+    border-bottom: 2px solid #007bff;
+}
+
+/* 診所地標控制樣式 - 畫面上方偏左 */
+.clinic-controls-top {
+    position: fixed;
+    top: 20px;
+    left: 250px;
+    z-index: 1000;
+    background: transparent;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    max-width: 500px;
+    width: auto;
+    overflow: visible;
+}
+
+.specialty-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.specialty-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.specialty-checkbox:hover {
+    background: rgba(245, 245, 245, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.specialty-checkbox.checked {
+    background: rgba(227, 242, 253, 0.95);
+    color: #1976d2;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+}
+
+.specialty-checkbox input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.specialty-checkbox .specialty-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.specialty-checkbox .specialty-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.loading-specialties {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.clinic-info {
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-top: 5px;
+}
+
+.clinic-info small {
+    font-size: 10px;
+    color: #666;
+    font-style: normal;
+}
+
+/* 診所標記樣式 - 極簡版本，專注解決定位問題 */
+.clinic-marker {
+    background: white;
+    color: #333;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #000;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    /* 最簡單的居中方式 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 移除可能干擾定位的屬性 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 暫時移除縮放相關的CSS，專注解決基本定位問題 */
+/*
+.leaflet-zoom-anim .clinic-marker {
+    transition: transform 0.2s ease;
+}
+
+.leaflet-container[data-zoom="8"] .clinic-marker,
+.leaflet-container[data-zoom="9"] .clinic-marker,
+.leaflet-container[data-zoom="10"] .clinic-marker {
+    transform: scale(0.5);
+}
+
+.leaflet-container[data-zoom="11"] .clinic-marker,
+.leaflet-container[data-zoom="12"] .clinic-marker {
+    transform: scale(0.7);
+}
+
+.leaflet-container[data-zoom="13"] .clinic-marker,
+.leaflet-container[data-zoom="14"] .clinic-marker {
+    transform: scale(1.0);
+}
+
+.leaflet-container[data-zoom="15"] .clinic-marker,
+.leaflet-container[data-zoom="16"] .clinic-marker,
+.leaflet-container[data-zoom="17"] .clinic-marker,
+.leaflet-container[data-zoom="18"] .clinic-marker {
+    transform: scale(1.3);
+}
+*/
+
+/* 獨立數字標記樣式（雙標記系統）- 完全不干擾主圖標定位 */
+.clinic-badge {
+    background: #ff4444;
+    color: white;
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    /* 重要：不使用position，完全依賴Leaflet定位 */
+    z-index: 1001; /* 確保在主圖標之上 */
+}
+
+/* 雙標記系統不需要HTML結構相關樣式 */
+
+.clinic-popup {
+    max-width: 250px;
+}
+
+.clinic-popup .clinic-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.clinic-popup .clinic-address {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.clinic-popup .clinic-specialties-header {
+    font-weight: bold;
+    margin: 8px 0 5px 0;
+    color: #333;
+    font-size: 12px;
+}
+
+.clinic-popup .clinic-specialties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.clinic-popup .specialty-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: #495057;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+/* 響應式設計 - 診所控制區 */
+@media (max-width: 768px) {
+    .clinic-controls-top {
+        top: 10px;
+        left: 10px;
+        max-width: calc(100vw - 20px);
+        padding: 8px 10px;
+    }
+    
+
+    
+    .specialty-checkboxes {
+        gap: 4px;
+    }
+    
+    .specialty-checkbox {
+        font-size: 10px;
+        padding: 4px 6px;
+        gap: 3px;
+    }
+    
+    .clinic-info {
+        font-size: 9px;
+    }
+}
+

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣互動式地圖 - 薪資所得視覺化</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="map"></div>
+    
+    <!-- 診所地標控制 - 畫面上方 -->
+    <div id="clinic-controls" class="clinic-controls-top" style="display: none;">
+        <div class="specialty-checkboxes" id="specialty-checkboxes">
+            <!-- 診所科別勾選框將在這裡動態載入 -->
+            <div class="loading-specialties">載入診所科別中...</div>
+        </div>
+    </div>
+    
+    <!-- 控制面板 -->
+    <div id="control-panel" class="control-panel">
+        <!-- 返回按鈕 -->
+        <div id="back-to-counties-btn" class="control-button">
+            <button onclick="backToCounties()">返回縣市界</button>
+        </div>
+        
+        <!-- 雙變數控制滑桿 -->
+        <div id="bivariate-controls" class="bivariate-controls" style="display: none;">
+            <h4>雙變數權重控制</h4>
+            
+            <div class="slider-container">
+                <label for="income-weight">薪資比重: <span id="income-weight-value">50%</span></label>
+                <input type="range" id="income-weight" min="0" max="100" value="50" class="weight-slider">
+            </div>
+            
+            <div class="slider-container">
+                <label for="density-weight">人口密度比重: <span id="density-weight-value">50%</span></label>
+                <input type="range" id="density-weight" min="0" max="100" value="50" class="weight-slider">
+            </div>
+            
+            <div class="slider-info">
+                <small>調整滑桿來改變地圖顏色的變數比重</small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 雙變數矩陣圖例 -->
+    <div id="bivariate-legend" class="bivariate-legend" style="display: none;">
+        <h4>雙變數視覺化</h4>
+        <div class="bivariate-matrix" id="bivariate-matrix">
+            <!-- 9x9 色彩矩陣將在這裡動態生成 -->
+        </div>
+        <div class="bivariate-axes">
+            <div class="axis-label x-axis">薪資中位數 →</div>
+            <div class="axis-label y-axis">人口密度 ↑</div>
+        </div>
+    </div>
+    
+    <!-- 資料面板 -->
+    <div id="data-panel" class="data-panel">
+        <div class="data-panel-header">
+            <h2 id="panel-title">村里薪資資料</h2>
+            <button onclick="closeDataPanel()" class="close-btn">&times;</button>
+        </div>
+        <div id="panel-content" class="data-panel-content">
+            <!-- 資料內容將在這裡動態載入 -->
+        </div>
+    </div>
+    
+    <!-- 載入指示器 -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <p>載入中...</p>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- 自定義 JS -->
+    <script src="script.js"></script>
+</body>
+</html> 

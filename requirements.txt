@@ -1,0 +1,9 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+geopandas==0.14.1
+pandas>=2.0.0
+shapely>=2.0.0
+python-multipart==0.0.6
+odfpy==1.4.1
+googlemaps==4.10.0
+requests==2.31.0 
