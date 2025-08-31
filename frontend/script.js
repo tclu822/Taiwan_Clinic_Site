@@ -24,7 +24,7 @@ let currentWeights = {
 // API 基礎 URL - 根據環境動態配置
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8000'
-    : 'https://taiwan-clinic-site-production.up.railway.app'; // 請將此URL替換為您的Railway後端URL
+    : 'https://web-production-9456e.up.railway.app'; // Railway後端URL
 
 // 工具函數：將hex顏色轉換為rgba格式
 function hexToRgba(hex, alpha) {
