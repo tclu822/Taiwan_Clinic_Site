@@ -1,0 +1,47 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.cache
+.pytest_cache
+*.egg-info
+
+# Virtual environments
+venv
+env
+ENV
+.venv
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Documentation
+README.md
+DEPLOYMENT_GUIDE.md
+
+# Deployment configs for other platforms
+railway.toml
+render.yaml
+Procfile
+runtime.txt
+
+# Development scripts
+start_*.py
+start_*.bat
